@@ -1,0 +1,157 @@
+<!-- Personal Tab Form Starts -->
+{{parqueadero | json}}
+<form #informacionForm="ngForm" class="editForm" novalidate>
+  <div class="tab-pane active">
+    <p class="font-medium-2 text-center">{{title}}</p>
+    <br/>
+    <div class='row'>
+      <div class='col-12'>
+        <div class="row">
+          <div class='col-12 col-sm-6'>
+            <div class="form-group">
+              <label class="form-control-label" for="ciudad">Ciudad</label>
+              <select name="ciudad" id="ciudad" #ciudad="ngModel" required class="form-control input-md" [(ngModel)]="parqueadero.ciudad">
+                <option value="">Seleccione</option>
+                <option value="Bogota">Bogota</option>
+                <option value="Medellin">Medellin</option>
+                <option value="Santiago de Cali">Santiago de Cali</option>
+              </select>
+              <small class="form-text text-muted danger" *ngIf="!ciudad.valid && (ciudad.dirty || ciudad.touched)">La ciudad es requerida!</small>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6'>
+            <div class="form-group">
+              <label class="form-control-label" for="direccion">Dirección</label>
+              <input class="form-control input-md" #direccion="ngModel" required id="direccion" name="direccion" type="text" [(ngModel)]="parqueadero.direccion">
+              <small class="form-text text-muted danger" *ngIf="!direccion.valid && (direccion.dirty || direccion.touched)">La dirección es requerida!</small>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-control-label" for="edificio">Edificio (Opcional)</label>
+          <input class="form-control input-md" #edificio="ngModel" edificio id="edificio" name="edificio" type="text" [(ngModel)]="parqueadero.edificio">
+        </div>
+        <div class="form-group">
+          <label class="form-control-label" for="vehiculos">Vehiculos que admite</label>
+          <div *ngFor="let vehiculo of vehiculos" class="checkbox">
+            <label class="custom-control custom-checkbox m-0">
+              <input type="checkbox" class="custom-control-input" id="{{ vehiculo.id }}" (change)="onVehiculoToggle(vehiculo.id, $event)"
+                [checked]="parqueadero.vehiculos.includes(vehiculos.id)">
+              <span class="custom-control-indicator"></span>
+              {{vehiculo.nombre}}
+            </label>
+          </div>
+        </div>
+        <div *ngFor="let vehiculo of parqueadero.vehiculos" class="row">
+          <div class="col-12">
+            <label class="form-control-label">{{vehiculo.nombre}} </label>
+          </div>
+          <div class='col-12 col-sm-6'>
+            <div class="form-group">
+              <label class="form-control-label" for="{{vehiculo.id}}">Espacios disponibles</label>
+              <input class="form-control input-md" required id="vehiculo.id" name="vehiculo.id" type="text" [(ngModel)]="vehiculo.espacio">
+              <small class="form-text text-muted danger" *ngIf="!vehiculo.id.valid && (vehiculo.id.dirty || vehiculo.id.touched)">La dirección es requerida!</small>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6'>
+            <div class="form-group">
+              <label class="form-control-label" for="direccion">valor mensual</label>
+              <input class="form-control input-md" required id="vehiculo.id" name="vehiculo.id" type="text" [(ngModel)]="vehiculo.precio">
+              <small class="form-text text-muted danger" *ngIf="!vehiculo.id.valid && (vehiculo.id.dirty || vehiculo.id.touched)">El precio es requerido!</small>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class='col-12 col-sm-6'>
+            <div class="form-group">
+              <label class="form-control-label" for="jornada">Jornada</label>
+              <select name="jornada" id="jornada" #jornada="ngModel" required class="form-control input-md" [(ngModel)]="parqueadero.jornada">
+                <option value="" disabled>Seleccione</option>
+                <option value="Completa">Completa</option>
+                <option value="Par">Par</option>
+                <option value="Impar">Impar</option>
+              </select>
+              <small class="form-text text-muted danger" *ngIf="!jornada.valid && (jornada.dirty || jornada.touched)">La jornada es requerida!</small>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6'>
+            <div class="form-group">
+              <label class="form-control-label" for="horario">Horario</label>
+              <select name="horario" id="horario" #horario="ngModel" required class="form-control input-md" [(ngModel)]="parqueadero.horario.tipo">
+                <option value="" disabled>Seleccione</option>
+                <option value="24 horas">24 horas</option>
+                <option value="Personalizado">Personalizado</option>
+              </select>
+              <small class="form-text text-muted danger" *ngIf="!horario.valid && (horario.dirty || horario.touched)">El tipo de horario es requerido</small>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="parqueadero.horario.tipo != '' && parqueadero.horario.tipo === 'Personalizado'">
+          <div class="col-12 col-sm-6">
+            <div class="form-group">
+              <label class="form-control-label" for="horaEntrada">Hora entrada</label>
+              <input class="form-control input-md" #horaEntrada="ngModel" required id="horaEntrada" name="horaEntrada" type="text" [(ngModel)]="parqueadero.horario.horaEntrada">
+              <small class="form-text text-muted danger" *ngIf="!horaEntrada.valid && (horaEntrada.dirty || horaEntrada.touched) && parqueadero.horario.tipo === 'Personalizado'">La hora de entrada es requerido!</small>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6">
+            <div class="form-group">
+              <label class="form-control-label" for="horaSalida">Hora salida</label>
+              <input class="form-control input-md" #horaSalida="ngModel" required id="horaSalida" name="horaSalida" type="text" [(ngModel)]="parqueadero.horario.horaSalida">
+              <small class="form-text text-muted danger" *ngIf="!horaSalida.valid && (horaSalida.dirty || horaSalida.touched) && parqueadero.horario.tipo === 'Personalizado'">La hora de salida es requerida!</small>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class='col-12 col-sm-6'>
+            <div class="form-group">
+              <label class="form-control-label" for="sistema">Sistema de apertura</label>
+              <select name="sistema" id="sistema" #sistema="ngModel" required class="form-control input-md" [(ngModel)]="parqueadero.sistema">
+                <option value="" disabled>Seleccione</option>
+                <option value="Automática">Automática</option>
+                <option value="Manual">Manual</option>
+                <option value="Celaduria">Celaduria</option>
+              </select>
+              <small class="form-text text-muted danger" *ngIf="!sistema.valid && (sistema.dirty || sistema.touched)">El sistema de apertura es requerida!</small>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6'>
+            <div class="form-group">
+              <label class="form-control-label" for="tamano">Tamaño del parqueadero</label>
+              <select name="tamano" id="tamano" #tamano="ngModel" required class="form-control input-md" [(ngModel)]="parqueadero.tamano">
+                <option value="" disabled>Seleccione</option>
+                <option value="Pequeño (1.7 m x 2.7 m)">Pequeño (1.7 m x 2.7 m)</option>
+                <option value="Mediano (2 m x 3 m)">Mediano (2 m x 3 m)</option>
+                <option value="Grande (2.5 m x 3.5 m)">Grande (2.5 m x 3.5 m)</option>
+              </select>
+              <small class="form-text text-muted danger" *ngIf="!tamano.valid && (tamano.dirty || tamano.touched)">El tamaño del parqueadero es requerido</small>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-control-label" for="vehiculos">Caracteristicas</label>
+          <div *ngFor="let feature of features" class="checkbox">
+            <label class="custom-control custom-checkbox m-0">
+              <input type="checkbox" class="custom-control-input" id="{{ feature.id }}" (change)="onCaracteristicasToggle(feature.id, $event)">
+              <span class=" custom-control-indicator "></span>
+              {{feature.descripcion}}
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-control-label" for="descripcion">Descripción</label>
+          <textarea name="descripcion" id="descripcion" cols="30" rows="2" #descripcion="ngModel" class="form-control input-md" [(ngModel)]="parqueadero.descripcion"></textarea>
+        </div>
+        <div class="form-group text-center">
+          <button type="button" uiSref="work" class="btn btn-success btn-raised" [disabled]="!informacionForm.valid" (click)="save(informacionForm)">
+            Siguiente
+            <span style="margin-left:10px;">
+              <i class="ft-chevron-right"></i>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<!-- Personal Tab Form Ends -->

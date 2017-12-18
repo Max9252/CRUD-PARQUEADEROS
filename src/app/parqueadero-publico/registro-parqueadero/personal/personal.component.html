@@ -1,0 +1,51 @@
+<!-- Personal Tab Form Starts -->
+{{personal | json}}
+<form #personalForm="ngForm" class="editForm" novalidate>
+  <div class="tab-pane active">
+    <p class="font-medium-2 text-center">{{title}}</p>
+    <br/>
+    <div class='row'>
+      <div class='col-12'>
+        <div class="row">
+          <div class='col-12 col-sm-6'>
+            <div class="form-group">
+              <label class="form-control-label" for="nombre">Nombre</label>
+              <input class="form-control input-md" #nombre="ngModel" required id="nombre" name="nombre" type="text" [(ngModel)]="personal.nombre">
+              <small class="form-text text-muted danger" *ngIf="!nombre.valid && (nombre.dirty || nombre.touched)">El nombre es requerido!</small>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6'>
+            <div class="form-group">
+              <label class="form-control-label" for="apellido">Apellido</label>
+              <input class="form-control input-md" #apellido="ngModel" required id="apellido" name="apellido" type="text" [(ngModel)]="personal.apellido">
+              <small class="form-text text-muted danger" *ngIf="!apellido.valid && (apellido.dirty || apellido.touched)">La dirección es requerida!</small>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-control-label" for="apellido">Email</label>
+          <input class="form-control input-md" #email="ngModel" required id="email" name="email" type="text" [(ngModel)]="personal.email">
+          <small class="form-text text-muted danger" *ngIf="!email.valid && (email.dirty || email.touched)">El email es requerido!</small>
+        </div>
+        <div class="form-group">
+          <label class="form-control-label" for="apellido">Telefono</label>
+          <input class="form-control input-md" #telefono="ngModel" required id="telefono" name="telefono" type="text" [(ngModel)]="personal.telefono">
+          <small class="form-text text-muted danger" *ngIf="!telefono.valid && (telefono.dirty || telefono.touched)">El telefono es requerido!</small>
+        </div>
+        <div class="form-group text-center space-20">
+          <button uiSref="personal" type="button" class="btn btn-raised btn-secondary" (click)="cancel()">
+            <span style="margin-right:10px;">
+              <i class="ft-chevron-left"></i>
+            </span> Anterior</button>
+          <button uiSref="bancario" type="button" class="btn btn-raised btn-info" [disabled]="!personalForm.valid" (click)="save(personalForm)">
+            Siguiente
+            <span style="margin-left:10px;">
+              <i class="ft-chevron-right"></i>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<!-- Personal Tab Form Ends -->
